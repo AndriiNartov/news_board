@@ -1,11 +1,25 @@
-from rest_framework.generics import CreateAPIView, RetrieveAPIView, UpdateAPIView, DestroyAPIView, ListAPIView
+from rest_framework.generics import (
+    CreateAPIView,
+    RetrieveAPIView,
+    UpdateAPIView,
+    DestroyAPIView,
+    ListAPIView,
+)
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 
 from .models import Comment, Post
-from .serializers import PostCreateSerializer, PostUpdateSerializer, PostUpvoteSerializer, \
-    CommentSerializer, PostCommentListSerializer, PostDetailSerializer, CommentUpdateSerializer, PostListSerializer
+from .serializers import (
+    PostCreateSerializer,
+    PostUpdateSerializer,
+    PostUpvoteSerializer,
+    CommentSerializer,
+    PostCommentListSerializer,
+    PostDetailSerializer,
+    CommentUpdateSerializer,
+    PostListSerializer,
+)
 from .permissions import CommentUpdateDeletePermission, PostUpdateDeletePermission
 
 
@@ -26,7 +40,7 @@ class PostDetailView(RetrieveAPIView):
 class PostUpdateView(UpdateAPIView):
     serializer_class = PostUpdateSerializer
     queryset = Post.objects.all()
-    http_method_names = ['patch']
+    http_method_names = ["patch"]
     permission_classes = [PostUpdateDeletePermission]
 
     def update(self, request, *args, **kwargs):
@@ -37,18 +51,14 @@ class PostUpdateView(UpdateAPIView):
             return Response(data=serializer.data)
         else:
             return Response(
-                {
-                    "message": "failed",
-                    "details": serializer.errors
-                },
-                status=400
+                {"message": "failed", "details": serializer.errors}, status=400
             )
 
 
 class PostUpvoteView(UpdateAPIView):
     serializer_class = PostUpvoteSerializer
     queryset = Post.objects.all()
-    http_method_names = ['patch']
+    http_method_names = ["patch"]
     permission_classes = [IsAuthenticated]
 
     def patch(self, request, *args, **kwargs):
@@ -62,9 +72,9 @@ class PostUpvoteView(UpdateAPIView):
         return Response(
             {
                 "message": "failed",
-                "details": f'User {request.user.username} is already upvoated this post'
+                "details": f"User {request.user.username} is already upvoated this post",
             },
-            status=400
+            status=400,
         )
 
 
@@ -85,7 +95,7 @@ class PostCommentCreateView(CreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        post = Post.objects.get(pk=self.kwargs['pk'])
+        post = Post.objects.get(pk=self.kwargs["pk"])
         author_name = self.request.user
         serializer.save(post=post, author_name=author_name)
 

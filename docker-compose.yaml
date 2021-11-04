@@ -20,31 +20,28 @@ services:
       - ./:/usr/src/app
     depends_on:
       - postgres_db
+      - redis
     ports:
       - "8000:8000"
   redis:
     image: redis
     ports:
       - "6379:6379"
+  beat:
+    build:
+      context: .
+    volumes:
+      - ./:/usr/src/app
+    command: celery -A news_board beat
     depends_on:
-      - web
-#  celery_beat:
-#    build:
-#      context: .
-#    volumes:
-#      - ./:/usr/src/app
-#    command: ["celery", "-A", "news_board", "beat"]
-#    depends_on:
-#      - redis
-#      - postgres_db
-#      - web
-#  celery_worker:
-#    build:
-#      context: .
-#    volumes:
-#      - ./:/usr/src/app
-#    command: ["celery", "-A", "news_board", "worker", "-l", "INFO"]
-#    depends_on:
-#      - redis
-#      - postgres_db
-#      - web
+      - redis
+      - postgres_db
+  worker:
+    build:
+      context: .
+    volumes:
+      - ./:/usr/src/app
+    command: celery -A news_board worker -l info
+    depends_on:
+      - redis
+      - postgres_db
