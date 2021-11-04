@@ -9,9 +9,11 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
+import os
 from datetime import timedelta
 from pathlib import Path
-
+from decouple import config
+from dj_database_url import parse as dburl
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 from django.conf import settings
 
@@ -27,7 +29,7 @@ SECRET_KEY = 'django-insecure-kub6va(dqf3muyvyse4+r^&y@a0$=!a03ugpg%8d#dq(7!c1ih
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['news-board-application.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -81,13 +83,24 @@ WSGI_APPLICATION = 'news_board.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
+default_db_url = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
+
+DATABASES = {'default': config('DATABASE_URL', default=default_db_url, cast=dburl)}
+
+# default_db_url = f'postgres://' \
+#                 f'{config("POSTGRES_USER")}:' \
+#                 f'{config("POSTGRES_PASSWORD")}@' \
+#                 f'{config("DB_HOST")}/' \
+#                 f'{config("POSTGRES_DB")}'
+#
+# DATABASES = {'default': config('DATABASE_URL', default=default_db_url, cast=dj_database_url.parse)}
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
