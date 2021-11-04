@@ -24,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-kub6va(dqf3muyvyse4+r^&y@a0$=!a03ugpg%8d#dq(7!c1ih'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG')
 
 ALLOWED_HOSTS = ['*']
 
@@ -90,17 +90,17 @@ WSGI_APPLICATION = 'news_board.wsgi.application'
 #     }
 # }
 
-default_db_url = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
+# default_db_url = 'sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3')
+#
+# DATABASES = {'default': config('DATABASE_URL', default=default_db_url, cast=dburl)}
+
+default_db_url = f'postgres://' \
+                f'{config("POSTGRES_USER")}:' \
+                f'{config("POSTGRES_PASSWORD")}@' \
+                f'{config("DB_HOST")}/' \
+                f'{config("POSTGRES_DB")}'
 
 DATABASES = {'default': config('DATABASE_URL', default=default_db_url, cast=dburl)}
-
-# default_db_url = f'postgres://' \
-#                 f'{config("POSTGRES_USER")}:' \
-#                 f'{config("POSTGRES_PASSWORD")}@' \
-#                 f'{config("DB_HOST")}/' \
-#                 f'{config("POSTGRES_DB")}'
-#
-# DATABASES = {'default': config('DATABASE_URL', default=default_db_url, cast=dj_database_url.parse)}
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
