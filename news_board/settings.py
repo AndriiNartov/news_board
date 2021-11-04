@@ -94,7 +94,7 @@ DATABASES = {
         'NAME': 'news_board_db',
         'USER': 'news_board_user',
         'PASSWORD': 'devpass',
-        'HOST': 'postgres_db',
+        'HOST': 'localhost',
         'PORT': '5432'
     }
 }
