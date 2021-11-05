@@ -29,7 +29,7 @@ SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config("DEBUG")
 
-ALLOWED_HOSTS = ["news-board-application.herokuapp.com", "127.0.0.1"]
+ALLOWED_HOSTS = ["news-board-application.herokuapp.com", "127.0.0.1", "stepic-vacancies-week2.herokuapp.com"]
 
 
 # Application definition
