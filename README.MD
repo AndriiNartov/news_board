@@ -15,7 +15,7 @@ Object of this task is to create a simple REST API. API was created using Django
 ### Set up and run project:
 To run this project with Docker, change your working directory to ```news_board``` and run command:
 ```
-docker-compose up
+docker-compose up --build
 ```
 
 After running the application you can make requests to localhost ```127.0.0.1:8000```
@@ -29,6 +29,11 @@ You can also import Postman collection and work with all requests in your Postma
 ```https://www.getpostman.com/collections/ff4e2f3780443d8bc51f```
 
 Project also was deployed on Heroku server ```https://news-board-application.herokuapp.com```
-and you are able to make requests to this service.
+and you are able to make requests to this service too.
 
+### Important
+
+You can find .env file in this repository. It was included here to make you run the project less complicated.
+In case of real project you must 'hide' your sensitive data (SECRET_KEY,access db credentials, etc.)
+and don't show it in public repository.
 

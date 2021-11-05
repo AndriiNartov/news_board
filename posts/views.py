@@ -4,6 +4,7 @@ from rest_framework.generics import (
     UpdateAPIView,
     DestroyAPIView,
     ListAPIView,
+    get_object_or_404,
 )
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -62,8 +63,6 @@ class PostUpvoteView(UpdateAPIView):
     permission_classes = [IsAuthenticated]
 
     def patch(self, request, *args, **kwargs):
-        # from .tasks import reset_post_upvotes
-        # reset_post_upvotes.delay()
         post = self.get_object()
         if request.user not in post.upvotes_amount.all():
             post.upvotes_amount.add(request.user)
@@ -95,7 +94,7 @@ class PostCommentCreateView(CreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        post = Post.objects.get(pk=self.kwargs["pk"])
+        post = get_object_or_404(Post, pk=self.kwargs["pk"])
         author_name = self.request.user
         serializer.save(post=post, author_name=author_name)
 
